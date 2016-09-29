@@ -4,7 +4,7 @@ import Functions
 
 if __name__ == '__main__':
 
-    k = 100 #Number of measurements
+    k = 10 #Number of measurements
     ps = np.array([10, 20, 30, 40, 50, 75, 100, 150, 200])
     ns = np.array([100,200])
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
             pError = Functions.calculate_pError(k,p,n)
             pErrors = np.append(pErrors,pError)
 
-            pns = np.append(pns, (p+0.0)/(n+0.0)) #TODO int -> float conversion hack for now.
+            pns = np.append(pns, (p+0.0)/(n+0.0))
             print "k = ",k,"p = ",p, "n = ",n,"pError = ", pError
 
         print "pErrors: ", pErrors
@@ -35,8 +35,14 @@ if __name__ == '__main__':
         elif(n == 200):
             clr = 'b'
 
-        lbl = "N = %s"%numNeurons
-        plt.plot(pErrors,pns, 'o',color=clr, label=n)
+        lbl = "N = %s"%n
+        plt.plot(pns,pErrors, '.',linestyle='-',color=clr, label="N = %s"%n)
+
+    plt.xlabel(r"$\alpha = p/N$")
+    plt.ylabel("${P_{Error}}$")
+    plt.title(r"Evolution of ${P_{Error}}$ through $\alpha$ for 2 values of N")
+    plt.axis([0, 1.1, 0, 1.1])
+    plt.legend()
 
     plt.show()
 

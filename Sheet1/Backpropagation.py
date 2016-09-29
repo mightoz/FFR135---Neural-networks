@@ -196,10 +196,11 @@ def train_network_no_hidden_layers(trainingSet, validationSet):
 
 def train_network_one_hidden_layers(trainingSet,validationSet):
 
-    numNeuronsSet = np.array([4*2**(x-1) for x in range(0,3)])
+    numNeuronsSet = np.array([4*2**(x-1) for x in range(0,5)])
 
-    experiments = 50
-
+    experiments = 100
+    trainingMeans = []
+    validationMeans = []
     plt.figure()
 
     for numNeurons in numNeuronsSet:
@@ -222,7 +223,7 @@ def train_network_one_hidden_layers(trainingSet,validationSet):
 
             classification_error_validation_set = []
 
-            while iterations < 1000:
+            while iterations < 200000:
 
                 r = np.random.randint(0, trainingSet[0].size) #Randomly chosen pattern
 
@@ -266,29 +267,38 @@ def train_network_one_hidden_layers(trainingSet,validationSet):
             trainingResults.append(np.min(classification_error_training_set))
             validationResults.append(np.min(classification_error_validation_set))
 
-        trainingResults = np.array(trainingResults)
-        validationResults = np.array(validationResults)
+        trainingResults = np.mean(np.array(trainingResults))
+        validationResults = np.mean(np.array(validationResults))
 
-        measurements = np.array([x * 1 for x in range(1, experiments + 1)])
+        trainingMeans.append(trainingResults)
+        validationMeans.append(validationResults)
 
-        clr = '.'
-        if (numNeurons == 2):
-            clr = 'b'
-        elif(numNeurons == 4):
-            clr = 'g'
-        elif(numNeurons == 8):
-            clr = 'r'
-        elif(numNeurons == 16):
-            clr = 'm'
-        else:
-            clr = 'k'
+    plt.plot(numNeuronsSet,trainingMeans, '.',linestyle='-',color='b',label='Training set')
+    plt.plot(numNeuronsSet,validationMeans, '.',linestyle='-',color='r',label='Validation set')
+    plt.title("Average classification error over number of hidden neurons")
+    plt.xlabel("Number of neurons, hidden layer")
+    plt.ylabel("${C_v}$")
+    plt.legend()
+        #measurements = np.array([x * 1 for x in range(1, experiments + 1)])
 
-        plt.plot(measurements, trainingResults, linestyle='-', color=clr, label='Training set, %s neurons'%numNeurons)
-        plt.plot(measurements, validationResults, linestyle='--', color=clr, label='Validation set, %s neurons'%numNeurons)
-        plt.legend()
-        plt.xlabel("Experiments")
-        plt.ylabel("${C_v}$")
-        plt.axis([1, experiments, 0, 1])
+        #clr = '.'
+        #if (numNeurons == 2):
+        #    clr = 'b'
+        #elif(numNeurons == 4):
+        #    clr = 'g'
+        #elif(numNeurons == 8):
+        #    clr = 'r'
+        #elif(numNeurons == 16):
+        #    clr = 'm'
+        #else:
+        #    clr = 'k'
+
+        #plt.plot(measurements, trainingResults, linestyle='-', color=clr, label='Training set, %s neurons'%numNeurons)
+        #plt.plot(measurements, validationResults, linestyle='--', color=clr, label='Validation set, %s neurons'%numNeurons)
+        #plt.legend()
+        #plt.xlabel("Experiments")
+        #plt.ylabel("${C_v}$")
+        #plt.axis([1, experiments, 0, 1])
     plt.show()
 
 

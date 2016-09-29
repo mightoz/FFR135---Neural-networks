@@ -41,15 +41,16 @@ if __name__ == '__main__':
         pSuccess3 = np.append(pSuccess3,successRates[3])
         pSuccess4 = np.append(pSuccess4,successRates[4])
 
-    plt.plot(distortions,pSuccess0,'x', linestyle='--',color= 'r', label = "Digit 0")
-    plt.plot(distortions,pSuccess1,'x', linestyle='--',color= 'g', label = "Digit 1")
-    plt.plot(distortions,pSuccess2,'x', linestyle='--',color= 'b', label = "Digit 2")
-    plt.plot(distortions,pSuccess3,'x', linestyle='--',color= 'k', label = "Digit 3")
-    plt.plot(distortions,pSuccess4,'x', linestyle='--',color= 'm', label = "Digit 4")
+    plt.plot(distortions,pSuccess0,'.', linestyle='-',color= 'r', label = "Digit 0")
+    plt.plot(distortions,pSuccess1,'.', linestyle='-',color= 'g', label = "Digit 1")
+    plt.plot(distortions,pSuccess2,'.', linestyle='-',color= 'b', label = "Digit 2")
+    plt.plot(distortions,pSuccess3,'.', linestyle='-',color= 'k', label = "Digit 3")
+    plt.plot(distortions,pSuccess4,'.', linestyle='-',color= 'm', label = "Digit 4")
 
     plt.axis([-0.1, 1.1, -0.1, 1.1],aspect=1)
-    plt.xlabel('Bit distortion')
+    plt.xlabel('Bit distortion($q$)')
     plt.ylabel('Success rate')
+    plt.title('Success rate of pattern recognition over $q$')
     plt.legend()
 
     plt.show()

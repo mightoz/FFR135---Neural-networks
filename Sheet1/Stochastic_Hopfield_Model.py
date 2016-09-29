@@ -37,7 +37,7 @@ def noisy_dynamics(weights, patterns, beta, numNeurons):
     originalPattern.shape = (originalPattern.size,1)
     updatedPattern = np.array(patterns[0])
     updatedPattern.shape = (updatedPattern.size, 1)
-    numEpochs = 20
+    numEpochs = 50
 
     epochsToMeasure = int(numEpochs/10)
     epochs = [x for x in range(numEpochs)]
@@ -93,7 +93,7 @@ def evaluate_noisy_dynamics(numNeuronsList):
             print "alpha",alpha
             mValues = []
 
-            for i in range (0,20):
+            for i in range (0,50):
                 p = int(round(alpha*numNeurons))
                 patterns = np.array(Functions.store_random_patterns(p, numNeurons))
                 weights = np.array(Functions.calculate_weight(patterns))
@@ -132,7 +132,7 @@ def evaluate_noisy_dynamics(numNeuronsList):
 
 if __name__ == '__main__':
 
-    numNeuronsList = np.array([250,500])#50,100,250,500])
+    numNeuronsList = np.array([50,100,250])
 
     evaluate_noisy_dynamics(numNeuronsList)
 
