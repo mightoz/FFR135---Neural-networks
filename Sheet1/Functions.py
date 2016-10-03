@@ -1,13 +1,8 @@
 import numpy as np
+import scipy.special as sp
 
 
 def store_random_patterns(p,n):
-    """
-
-    :param p: number of patterns
-    :param n: number of nodes
-    :return: vector of patterns
-    """
 
     patterns = np.zeros((p,n))
 
@@ -46,6 +41,10 @@ def calculate_weight(patterns):
 
     return weights #Wi
 
+def error_function(alpha):
+    pErr = 1.0/2.0*(1.0 -sp.erf(np.sqrt(np.power(2*alpha,-1))))
+    return pErr
+
 def calculate_pError(k,p,n):
 
     pError = 0
@@ -63,15 +62,15 @@ def calculate_pError(k,p,n):
                 si = np.matrix(pattern) #Si
                 si.shape = (n,1)
 
-                sx = weights*si
+                sx = np.dot(weights,si)
                 sx = np.sign(sx) #Si+1
 
                 pattern.shape = (n,1)
 
-                arr = si-sx
+                arr = np.sign(np.abs(si-sx))
+                sum = np.mean(arr)
 
-                if any(arr):
-                    errSum += 1.0
+                errSum+=sum
 
         pError += errSum/p
 
@@ -127,12 +126,3 @@ def distort_pattern(pattern,q):
         distortedPattern[bitToFlip] *= -1
 
     return distortedPattern
-
-
-
-#updatedPattern = np.sign(weights*updatedPattern)
-    #
-    #faultyBits = updatedPattern-originalPatternCol
-    #
-    #if(not(faultyBits.any())):
-    #    patternFound = 1.0

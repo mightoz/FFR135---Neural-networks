@@ -42,9 +42,6 @@ def noisy_dynamics(weights, patterns, beta, numNeurons):
     epochsToMeasure = int(numEpochs/10)
     epochs = [x for x in range(numEpochs)]
 
-    #iterations = [x for x in range (numEpochs*numNeurons)]#TODO
-    #mS = []#TODO
-
     mAverage = 0.0
 
     #Run dynamics until m values are somewhat 'stable'
@@ -53,7 +50,6 @@ def noisy_dynamics(weights, patterns, beta, numNeurons):
         for index in randomIndexes:
             newBit = stochastic_update_step(weights[index], updatedPattern, beta)
             updatedPattern[index] = newBit
-            #mS = np.append(mS, calculate_m(originalPattern, updatedPattern, numNeurons))#TODO
 
     #Caluclate average over last values
     for _ in range (0,epochsToMeasure):
@@ -70,10 +66,6 @@ def noisy_dynamics(weights, patterns, beta, numNeurons):
 
     mAverage *= 1.0/(numEpochs*0.1) #Divide by number of epochs for average
 
-    #plt.figure()#TODO
-    #plt.plot(iterations, mS, color='b', linestyle='-')#TODO
-    #plt.axis([0, numEpochs*numNeurons, -0.1, 1])#TODO
-    #plt.show()#TODO
     return mAverage
 
 def evaluate_noisy_dynamics(numNeuronsList):
@@ -136,7 +128,3 @@ if __name__ == '__main__':
 
     evaluate_noisy_dynamics(numNeuronsList)
 
-
-    #patterns = np.array(Functions.store_random_patterns(p, n))#TODO
-    #weights = np.array(Functions.calculate_weight(patterns))#TODO
-    #noisy_dynamics(weights, patterns, beta, n)#TODO

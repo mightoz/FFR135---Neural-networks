@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 
 def training_set():
+    plt.figure()
     f = file('Training_Set.txt', 'r')
     patterns = []
     for line in f:
@@ -24,15 +25,17 @@ def training_set():
     trainingSet[0] = xs / np.std(xs)
     trainingSet[1] = ys / np.std(ys)
 
-    # xs = trainingSet[0]
-    # ys = trainingSet[1]
-    # colors = ['r' if x == 1 else 'b' for x in trainingSet[2]]
-    # plt.figure()
-    # for i in range (0,xs.size):
-    #    plt.plot(xs[i],ys[i],'o',color=colors[i])
+    xs = trainingSet[0]
+    ys = trainingSet[1]
+    colors = ['r' if x == 1 else 'b' for x in trainingSet[2]]
 
-    # plt.show()
+    for i in range (0,xs.size):
+        plt.plot(xs[i],ys[i],'o',color=colors[i])
 
+    plt.xlabel(r'${\xi_1}$',fontsize=18)
+    plt.ylabel(r'${\xi_2}$',fontsize=18)
+    plt.title('Distribution of points corresponding to training set')
+    plt.show()
 
     return trainingSet
 
@@ -123,7 +126,7 @@ def calculate_classification_error_hidden_layer(set, wij, thetai, wi, theta):
 
 def train_network_no_hidden_layers(trainingSet, validationSet):
 
-    experiments = 100
+    experiments = 1
 
     trainingResults = []
     validationResults = []
@@ -131,9 +134,8 @@ def train_network_no_hidden_layers(trainingSet, validationSet):
     for i in range(0, experiments):
 
         weights = initialize_weights(2, 1)
-        # print "Weights before learning", weights
+
         biases = initialize_biases(1)
-        # print "Biases before learning",biases
 
         iterations = 0
 
@@ -143,7 +145,7 @@ def train_network_no_hidden_layers(trainingSet, validationSet):
 
         classification_error_validation_set = []
 
-        while iterations < 200000:
+        while iterations < 2000:
 
             r = np.random.randint(0, trainingSet[0].size)
 
@@ -176,6 +178,15 @@ def train_network_no_hidden_layers(trainingSet, validationSet):
         trainingResults.append(np.min(classification_error_training_set))
         validationResults.append(np.min(classification_error_validation_set))
 
+        weights = weights.transpose()
+        print "weights",weights
+        print "biases",biases
+
+        xs = np.linspace(-0.5,0.5)
+        ys = -(weights[0]/weights[1])*xs+(biases[0]/weights[0])
+        plt.plot(xs,ys,linestyle='-',clr='k')
+
+
 
     trainingResults = np.array(trainingResults)
     validationResults = np.array(validationResults)
@@ -190,15 +201,16 @@ def train_network_no_hidden_layers(trainingSet, validationSet):
     plt.ylabel("${C_v}$")
     plt.axis([1, experiments, 0, 1])
     plt.show()
-
+    plt.legend()
+    plt.show()
     print "Average error training set", np.mean(trainingResults)
     print "Average error validation set", np.mean(validationResults)
 
 def train_network_one_hidden_layers(trainingSet,validationSet):
 
-    numNeuronsSet = np.array([4*2**(x-1) for x in range(0,5)])
+    numNeuronsSet = np.array([4*2**(x-1) for x in range(0,4)])
 
-    experiments = 100
+    experiments = 10
     trainingMeans = []
     validationMeans = []
     plt.figure()
@@ -223,7 +235,7 @@ def train_network_one_hidden_layers(trainingSet,validationSet):
 
             classification_error_validation_set = []
 
-            while iterations < 200000:
+            while iterations < 2000:
 
                 r = np.random.randint(0, trainingSet[0].size) #Randomly chosen pattern
 
@@ -279,26 +291,6 @@ def train_network_one_hidden_layers(trainingSet,validationSet):
     plt.xlabel("Number of neurons, hidden layer")
     plt.ylabel("${C_v}$")
     plt.legend()
-        #measurements = np.array([x * 1 for x in range(1, experiments + 1)])
-
-        #clr = '.'
-        #if (numNeurons == 2):
-        #    clr = 'b'
-        #elif(numNeurons == 4):
-        #    clr = 'g'
-        #elif(numNeurons == 8):
-        #    clr = 'r'
-        #elif(numNeurons == 16):
-        #    clr = 'm'
-        #else:
-        #    clr = 'k'
-
-        #plt.plot(measurements, trainingResults, linestyle='-', color=clr, label='Training set, %s neurons'%numNeurons)
-        #plt.plot(measurements, validationResults, linestyle='--', color=clr, label='Validation set, %s neurons'%numNeurons)
-        #plt.legend()
-        #plt.xlabel("Experiments")
-        #plt.ylabel("${C_v}$")
-        #plt.axis([1, experiments, 0, 1])
     plt.show()
 
 
@@ -306,6 +298,6 @@ if __name__ == '__main__':
     trainingSet = training_set()
     validationSet = validation_set()
 
-    #train_network_no_hidden_layers(trainingSet, validationSet)
+    train_network_no_hidden_layers(trainingSet, validationSet)
 
     train_network_one_hidden_layers(trainingSet,validationSet)
