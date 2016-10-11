@@ -96,7 +96,7 @@ if __name__ == '__main__':
     # generate data points
     data = triangle_points(1000)
     
-    for run in range(1,2):
+    for run in range(2):
         if run == 1:
             params['sigma_0'] = 5
         net = Kohonen(params)
