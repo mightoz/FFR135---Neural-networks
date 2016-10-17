@@ -7,10 +7,8 @@ import matplotlib.pyplot as plt
 class Hybrid_Net(object):
     eta_unsupervised = 0.02
     unsupervised_iterations = 100000
-
     supervised_iterations = 3000
     eta_supervised = 0.1
-
     beta = 0.5
 
     def __init__(self, k):
@@ -163,9 +161,9 @@ class Hybrid_Net(object):
 
         errors = []
 
-        for set in self.validation_set:
-            input = np.array([set[1], set[2]])
-            target = set[0]
+        for point in self.validation_set:
+            input = np.array([point[1], point[2]])
+            target = point[0]
 
             output_hidden = self.calculate_output_radialfun(input)
             b = self.calculate_b_output_layer(output_hidden)
@@ -237,11 +235,13 @@ def assignment_ab(k):
     lowest_error_index = np.argmin(errors)
     lowest_error = errors[lowest_error_index]
 
+    print"K = ",k
     print"Lowest error = ", lowest_error
     print"Average error = ", average_error
 
     best_network = hybrid_nets[lowest_error_index]
 
+    print "Best network found"
     ds = np.array(data_set()).transpose()
     xs_input = ds[1]
     ys_input = ds[2]
@@ -251,10 +251,10 @@ def assignment_ab(k):
     ys_weights = weights[1]
 
     xs_decision_boundary = np.linspace(-15, 25, num=100)
-    f = np.vectorize(best_network.decision_boundary_point)
 
     ys_decision_boundary = []
     starting_point = -25
+    print"Calculating decision boundary"
 
     for x in xs_decision_boundary:
         y = best_network.decision_boundary_point(x, starting_point)
@@ -264,19 +264,12 @@ def assignment_ab(k):
     ys_decision_boundary = np.array(ys_decision_boundary)
 
     plt.plot(xs_input, ys_input, 'o', color='#eeefff', label='Input patterns')
-
     plt.plot(xs_weights, ys_weights, 'o', color='r', label='Weights after unsupervised learning')
-
     plt.plot(xs_decision_boundary, ys_decision_boundary, color='b', linestyle='-', label='Decision boundary')
-
     plt.axis([-15, 25, -10, 15])
-
     plt.xlabel('$x$', fontsize=20)
-
     plt.ylabel('$y$', fontsize=20)
-
     plt.legend()
-
     plt.show()
 
 
@@ -291,7 +284,7 @@ def assignment_c():
 
         hybrid_nets = []
 
-        for _ in range(0, 1):
+        for _ in range(0, 20):
             hb = Hybrid_Net(k)
 
             hb.perform_unsupervised_learning()
@@ -311,14 +304,16 @@ def assignment_c():
 
     average_errors = np.array(average_errors)
 
-    plt.plot(k_values, average_errors, 'o', linestyle='-', color='r', label='Average classification error')
+    plt.plot(k_values, average_errors, linestyle='-', color='r', label='Average classification error')
     plt.legend()
     plt.xlabel('$k$', fontsize=20)
     plt.ylabel('${P_{error}}$', fontsize=20)
+    plt.axis([0, 21, -0.1, 1.1])
     plt.show()
 
 
 if __name__ == '__main__':
-    #assignment_ab(5)
-    #assignment_ab(20)
+
+    assignment_ab(5)
+    assignment_ab(20)
     assignment_c()
