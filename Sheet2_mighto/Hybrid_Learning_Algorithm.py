@@ -13,15 +13,17 @@ class Hybrid_Net(object):
 
     def __init__(self, k):
         self.num_neurons = k
+        data = data_set()
+        rand.shuffle(data)
+        self.data_set = np.array(data)
 
-        self.dataset = np.array(data_set())
-        rows, _ = self.dataset.shape
+        rows, _ = self.data_set.shape
 
         training_set_end = int(round(rows * 0.7))
 
-        self.training_set = np.array(self.dataset[:training_set_end, :])
+        self.training_set = np.array(self.data_set[:training_set_end, :])
 
-        self.validation_set = np.array(self.dataset[training_set_end:, :])
+        self.validation_set = np.array(self.data_set[training_set_end:, :])
 
         self.weights = self.initialize_weights()
 
@@ -49,7 +51,7 @@ class Hybrid_Net(object):
 
     def pick_random_pattern(self):
 
-        pattern = rand.choice(self.dataset)
+        pattern = rand.choice(self.data_set)
 
         return pattern
 
@@ -315,5 +317,5 @@ def assignment_c():
 if __name__ == '__main__':
 
     assignment_ab(5)
-    assignment_ab(20)
-    assignment_c()
+    #assignment_ab(20)
+    #assignment_c()
